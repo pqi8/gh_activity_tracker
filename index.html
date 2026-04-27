@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Activity Tracker</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div class="brand">
+          <h1>GitHub Activity Tracker</h1>
+          <span>Unauthenticated public commit counts by UTC day</span>
+        </div>
+      </header>
+
+      <form class="repo-form panel" data-repo-form>
+        <label>
+          Owner
+          <input data-owner name="owner" autocomplete="organization" placeholder="pqi8" />
+        </label>
+        <label>
+          Repository
+          <input data-repo name="repo" autocomplete="off" placeholder="gh_activity_tracker" />
+        </label>
+        <label>
+          Paste
+          <input data-paste name="paste" autocomplete="off" placeholder="https://github.com/owner/repo" />
+        </label>
+        <button data-submit type="submit">Track</button>
+      </form>
+
+      <p class="status" data-status data-tone="neutral">Ready.</p>
+
+      <section class="repo-heading">
+        <div>
+          <h2 data-repo-title>No repository loaded</h2>
+          <p data-repo-meta>Counts include the last 90 UTC days or the full repository lifetime, whichever is longer.</p>
+        </div>
+        <button class="secondary" data-download type="button" disabled>CSV</button>
+      </section>
+
+      <section class="stats" data-stats>
+        <article><span>Commits</span><strong>0</strong></article>
+        <article><span>Active days</span><strong>0</strong></article>
+        <article><span>Tracked days</span><strong>0</strong></article>
+        <article><span>Avg / day</span><strong>0</strong></article>
+        <article><span>Busiest day</span><strong>None</strong></article>
+        <article><span>Rate left</span><strong>Unknown</strong></article>
+      </section>
+
+      <div class="dashboard-grid">
+        <section class="section panel">
+          <h3>Daily commits</h3>
+          <div class="chart-scroll">
+            <div class="chart" data-chart style="--day-count: 90"></div>
+          </div>
+        </section>
+
+        <section class="section panel">
+          <h3>Calendar intensity</h3>
+          <div class="heatmap-scroll">
+            <div class="heatmap" data-heatmap></div>
+          </div>
+        </section>
+
+        <section class="section panel">
+          <h3>Daily table</h3>
+          <div class="table-scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Day</th>
+                  <th>Commits</th>
+                </tr>
+              </thead>
+              <tbody data-table-body></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>
