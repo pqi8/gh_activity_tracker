@@ -169,8 +169,6 @@ svg {
 .topbar,
 .repo-heading,
 .section-heading,
-.topbar-actions,
-.tool-buttons,
 .legend {
   display: flex;
   align-items: center;
@@ -196,35 +194,11 @@ svg {
   font-weight: 760;
 }
 
-.topbar-actions {
-  gap: 14px;
-}
-
-.ghost-button,
-.icon-pill,
-.export-button,
-.range-tabs,
-.tool-buttons span {
+.export-button {
   border: 1px solid var(--line);
   border-radius: 6px;
   background: var(--surface);
   color: var(--text);
-}
-
-.ghost-button {
-  padding: 10px 14px;
-  text-decoration: none;
-  font-size: 0.95rem;
-  font-weight: 650;
-}
-
-.icon-pill {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  color: var(--muted);
-  font-weight: 750;
 }
 
 .query-panel,
@@ -242,7 +216,7 @@ svg {
 
 .repo-form {
   display: grid;
-  grid-template-columns: 190px 230px 92px minmax(250px, 1fr) 330px 150px;
+  grid-template-columns: 190px 230px 92px minmax(250px, 1fr) 150px;
   gap: 18px;
   align-items: end;
 }
@@ -254,32 +228,6 @@ svg {
   background: var(--blue);
   color: #ffffff;
   box-shadow: 0 8px 18px rgba(7, 93, 204, 0.2);
-}
-
-.range-tabs {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  align-self: end;
-  min-height: 48px;
-  overflow: hidden;
-}
-
-.range-tabs span,
-.range-tabs strong {
-  display: grid;
-  place-items: center;
-  min-width: 48px;
-  padding: 0 12px;
-  color: var(--muted);
-  font-weight: 650;
-}
-
-.range-tabs strong {
-  margin: 4px;
-  border-radius: 5px;
-  background: var(--surface-soft);
-  color: var(--text);
-  box-shadow: inset 0 0 0 1px var(--line);
 }
 
 .rate-panel {
@@ -574,21 +522,6 @@ svg {
   font-weight: 650;
 }
 
-.tool-buttons {
-  gap: 12px;
-}
-
-.tool-buttons span {
-  display: grid;
-  place-items: center;
-  min-width: 38px;
-  height: 34px;
-  padding: 0 12px;
-  color: var(--muted);
-  font-size: 0.88rem;
-  font-weight: 650;
-}
-
 .legend {
   gap: 7px;
   color: var(--muted);
@@ -768,7 +701,6 @@ thead th {
     grid-template-columns: 1fr 1fr auto;
   }
 
-  .range-tabs,
   .rate-panel,
   .export-button {
     grid-column: auto / span 1;
@@ -828,7 +760,6 @@ thead th {
   }
 
   .topbar,
-  .topbar-actions,
   .repo-heading,
   .section-heading {
     align-items: flex-start;
@@ -850,7 +781,6 @@ thead th {
     border-bottom: 0;
   }
 
-  .range-tabs,
   .export-button {
     width: 100%;
   }
