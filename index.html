@@ -9,11 +9,23 @@
   <body>
     <div class="app-frame">
       <aside class="side-rail" aria-label="Application">
-        <a class="rail-mark" href="./" aria-label="GitHub Activity Tracker">GH</a>
+        <a class="rail-mark" href="./" aria-label="GitHub Activity Tracker">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M12 .7a11.3 11.3 0 0 0-3.6 22c.6.1.8-.2.8-.6v-2.1c-3.3.7-4-1.4-4-1.4-.5-1.4-1.3-1.8-1.3-1.8-1.1-.8.1-.8.1-.8 1.2.1 1.9 1.3 1.9 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.9 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.2.9 2.4v3.6c0 .4.2.7.8.6A11.3 11.3 0 0 0 12 .7Z" />
+          </svg>
+        </a>
         <nav class="rail-nav" aria-label="Views">
           <a class="rail-item is-active" href="./" aria-label="Dashboard">
-            <span class="rail-icon">D</span>
-            <span>Dashboard</span>
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 19V5h2v12h14v2H4Zm4-4 4-5 3 3 5-7v4h2V3h-7v2h4l-4.3 6-3-3-5.2 6.5L8 15Z" /></svg>
+            <span>Overview</span>
+          </a>
+          <a class="rail-item" href="#calendar" aria-label="Calendar">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M7 2h2v3H7V2Zm8 0h2v3h-2V2ZM4 4h3v2h2V4h6v2h2V4h3v17H4V4Zm2 7v8h12v-8H6Zm0-5v3h12V6H6Z" /></svg>
+            <span>Calendar</span>
+          </a>
+          <a class="rail-item" href="#activity" aria-label="Activity">
+            <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 19h16v2H4v-2Zm2-3h3V8H6v8Zm5 0h3V3h-3v13Zm5 0h3v-6h-3v6Z" /></svg>
+            <span>Activity</span>
           </a>
         </nav>
       </aside>
@@ -21,12 +33,12 @@
       <main class="workspace">
         <header class="topbar">
           <div class="brand">
-            <p>Public repository analytics</p>
-            <h1>GitHub Activity Tracker</h1>
+            <h1>GitHub Commit Tracker</h1>
           </div>
           <div class="topbar-actions">
-            <span class="badge">No auth</span>
-            <button class="icon-button" data-download type="button" disabled aria-label="Download CSV">CSV</button>
+            <a class="ghost-button" href="https://github.com/pqi8/gh_activity_tracker" rel="noreferrer">Star on GitHub</a>
+            <span class="icon-pill" aria-label="Theme">☼</span>
+            <span class="icon-pill" aria-label="Help">?</span>
           </div>
         </header>
 
@@ -40,11 +52,24 @@
               Repository
               <input data-repo name="repo" autocomplete="off" placeholder="gh_activity_tracker" />
             </label>
-            <label class="paste-field">
-              Paste URL
-              <input data-paste name="paste" autocomplete="off" placeholder="https://github.com/owner/repo" />
-            </label>
             <button class="primary-button" data-submit type="submit">Track</button>
+            <div class="range-tabs" aria-label="Date range">
+              <span>7D</span>
+              <span>30D</span>
+              <strong>90D</strong>
+              <span>1Y</span>
+              <span>All</span>
+            </div>
+            <div class="rate-panel">
+              <span>Rate left</span>
+              <strong data-rate-left>Unknown</strong>
+              <div class="rate-meter" aria-hidden="true"><span data-rate-meter></span></div>
+              <small data-rate-reset>Resets unknown</small>
+            </div>
+            <button class="export-button" data-download type="button" disabled aria-label="Download CSV">
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M11 3h2v10.2l3.6-3.6L18 11l-6 6-6-6 1.4-1.4 3.6 3.6V3Zm-6 16h14v2H5v-2Z" /></svg>
+              Export CSV
+            </button>
           </form>
 
           <div class="status-strip" role="status" aria-live="polite">
@@ -57,11 +82,7 @@
           <div>
             <p class="eyebrow">Current repository</p>
             <h2 data-repo-title>No repository loaded</h2>
-            <p data-repo-meta>Counts include the last 90 UTC days, capped at the repository creation date.</p>
-          </div>
-          <div class="window-chip">
-            <span>Window</span>
-            <strong>Auto</strong>
+            <p data-repo-meta>Counts include commits from the last 90 UTC days.</p>
           </div>
         </section>
 
@@ -71,41 +92,44 @@
           <article><span>Tracked days</span><strong>0</strong></article>
           <article><span>Avg / day</span><strong>0</strong></article>
           <article><span>Busiest day</span><strong>None</strong></article>
-          <article><span>Rate left</span><strong>Unknown</strong></article>
         </section>
 
         <div class="dashboard-grid">
-          <section class="panel chart-panel">
+          <section class="panel chart-panel" id="activity">
             <div class="section-heading">
               <div>
-                <p class="eyebrow">Timeline</p>
-                <h3>Daily commits</h3>
+                <h3>Commits per day</h3>
               </div>
-              <span class="mini-label">UTC</span>
+              <div class="tool-buttons" aria-hidden="true">
+                <span>Zoom</span>
+                <span>⌕</span>
+                <span>⌂</span>
+              </div>
             </div>
             <div class="chart-shell">
               <div class="chart" data-chart style="--day-count: 90"></div>
             </div>
           </section>
 
-          <section class="panel heatmap-panel">
+          <section class="panel heatmap-panel" id="calendar">
             <div class="section-heading">
               <div>
-                <p class="eyebrow">Calendar</p>
-                <h3>Intensity</h3>
+                <h3>Activity heatmap</h3>
               </div>
-              <span class="mini-label">Day</span>
+              <div class="legend" aria-hidden="true">
+                <span>Less</span><i></i><i></i><i></i><i></i><i></i><span>More</span>
+              </div>
             </div>
             <div class="heatmap-shell">
               <div class="heatmap" data-heatmap></div>
             </div>
+            <p class="heatmap-note">Each square represents a day. Darker colors mean more commits.</p>
           </section>
 
           <section class="panel table-panel">
             <div class="section-heading">
               <div>
-                <p class="eyebrow">Records</p>
-                <h3>Daily counts</h3>
+                <h3>Recent days</h3>
               </div>
             </div>
             <div class="table-scroll">

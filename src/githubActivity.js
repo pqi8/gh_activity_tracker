@@ -1,4 +1,3 @@
-const DAY_MS = 24 * 60 * 60 * 1000;
 const GITHUB_API_BASE = "https://api.github.com";
 
 export class GitHubActivityError extends Error {
@@ -55,12 +54,9 @@ export function addUtcDays(dayKey, days) {
   return toUtcDayKey(date);
 }
 
-export function getTrackingStartDay(createdAt, now = new Date()) {
+export function getDisplayStartDay(now = new Date()) {
   const today = toUtcDayKey(now);
-  const ninetyDayStart = addUtcDays(today, -89);
-  const createdDay = toUtcDayKey(createdAt);
-
-  return createdDay > ninetyDayStart ? createdDay : ninetyDayStart;
+  return addUtcDays(today, -89);
 }
 
 export function buildDaySeries(startDay, endDay) {
@@ -188,7 +184,7 @@ export async function fetchRepositoryActivity({ owner, repo, now = new Date(), s
   const metadataUrl = `${GITHUB_API_BASE}/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}`;
   const { data: metadata } = await fetchGitHubJson(metadataUrl, { signal });
   const endDay = toUtcDayKey(now);
-  const startDay = getTrackingStartDay(metadata.created_at, now);
+  const startDay = getDisplayStartDay(now);
   const since = `${startDay}T00:00:00.000Z`;
   const until = `${endDay}T23:59:59.999Z`;
   let nextUrl = `${GITHUB_API_BASE}/repos/${encodeURIComponent(owner)}/${encodeURIComponent(repo)}/commits?per_page=100&since=${encodeURIComponent(since)}&until=${encodeURIComponent(until)}`;

@@ -4,7 +4,7 @@ import {
   addUtcDays,
   buildDaySeries,
   countCommitsByDay,
-  getTrackingStartDay,
+  getDisplayStartDay,
   parseNextLink,
   parseRepositorySlug,
   summarizeSeries,
@@ -28,11 +28,10 @@ test("UTC day helpers are stable across date inputs", () => {
   assert.equal(addUtcDays("2026-04-27", -89), "2026-01-28");
 });
 
-test("tracking start uses the shorter of 90 days or repository lifetime", () => {
+test("display start always uses a 90-day UTC window", () => {
   const now = new Date("2026-04-27T12:00:00.000Z");
 
-  assert.equal(getTrackingStartDay("2026-04-20T00:00:00.000Z", now), "2026-04-20");
-  assert.equal(getTrackingStartDay("2020-02-14T00:00:00.000Z", now), "2026-01-28");
+  assert.equal(getDisplayStartDay(now), "2026-01-28");
 });
 
 test("buildDaySeries returns an inclusive range", () => {

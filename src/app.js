@@ -18,6 +18,9 @@ const tableBodyEl = document.querySelector("[data-table-body]");
 const repoTitleEl = document.querySelector("[data-repo-title]");
 const repoMetaEl = document.querySelector("[data-repo-meta]");
 const downloadButton = document.querySelector("[data-download]");
+const rateLeftEl = document.querySelector("[data-rate-left]");
+const rateMeterEl = document.querySelector("[data-rate-meter]");
+const rateResetEl = document.querySelector("[data-rate-reset]");
 
 let currentActivity = null;
 let activeController = null;
@@ -64,7 +67,7 @@ function updateUrl(owner, repo) {
 }
 
 function readInputs() {
-  const pasted = parseRepositorySlug(pasteInput.value);
+  const pasted = pasteInput ? parseRepositorySlug(pasteInput.value) : null;
 
   if (pasted) {
     ownerInput.value = pasted.owner;
@@ -88,12 +91,12 @@ function renderStats(activity) {
     ["Active days", formatNumber(summary.activeDays)],
     ["Tracked days", formatNumber(summary.daysTracked)],
     ["Avg / day", formatNumber(summary.averagePerDay, { maximumFractionDigits: 2 })],
-    ["Busiest day", summary.busiestDay.count ? `${formatDate(summary.busiestDay.day)} · ${summary.busiestDay.count}` : "None"],
-    ["Rate left", rateLimit?.remaining ?? "Unknown"]
+    ["Busiest day", summary.busiestDay.count ? formatNumber(summary.busiestDay.count) : "None"]
   ];
 
   repoTitleEl.textContent = `${activity.owner}/${activity.repo}`;
-  repoMetaEl.textContent = `${metadata.visibility} · ${formatDate(startDay)} to ${formatDate(endDay)} · resets ${resetLabel}`;
+  repoMetaEl.textContent = `${metadata.visibility} · ${formatDate(startDay)} to ${formatDate(endDay)} · repo created ${formatDate(metadata.created_at)} · resets ${resetLabel}`;
+  renderRateLimit(rateLimit);
   statsEl.replaceChildren(
     ...items.map(([label, value]) => {
       const card = document.createElement("article");
@@ -107,6 +110,18 @@ function renderStats(activity) {
       return card;
     })
   );
+}
+
+function renderRateLimit(rateLimit) {
+  const remaining = Number.isFinite(rateLimit?.remaining) ? rateLimit.remaining : null;
+  const resetLabel = rateLimit?.resetAt
+    ? new Intl.DateTimeFormat(undefined, { hour: "numeric", minute: "2-digit" }).format(rateLimit.resetAt)
+    : "unknown";
+  const width = remaining === null ? 0 : Math.min(100, Math.max(0, (remaining / 60) * 100));
+
+  rateLeftEl.textContent = remaining === null ? "Unknown" : formatNumber(remaining);
+  rateMeterEl.style.setProperty("--rate-width", `${width}%`);
+  rateResetEl.textContent = `Resets ${resetLabel}`;
 }
 
 function getIntensity(count, max) {
