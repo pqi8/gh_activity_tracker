@@ -2,7 +2,7 @@
 
 A static, serverless dashboard that counts public GitHub commits per UTC day.
 
-The page uses GitHub's public REST API without a PAT or OAuth flow. Enter an owner/org slug and repository name, or paste a GitHub repository URL. The dashboard tracks the longer window of:
+The page uses GitHub's public REST API without a PAT or OAuth flow. Enter an owner/org slug and repository name, or paste a GitHub repository URL. The dashboard tracks the shorter window of:
 
 - the last 90 UTC days
 - the full repository lifetime since `created_at`

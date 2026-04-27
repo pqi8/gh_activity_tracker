@@ -60,7 +60,7 @@ export function getTrackingStartDay(createdAt, now = new Date()) {
   const ninetyDayStart = addUtcDays(today, -89);
   const createdDay = toUtcDayKey(createdAt);
 
-  return createdDay < ninetyDayStart ? createdDay : ninetyDayStart;
+  return createdDay > ninetyDayStart ? createdDay : ninetyDayStart;
 }
 
 export function buildDaySeries(startDay, endDay) {
