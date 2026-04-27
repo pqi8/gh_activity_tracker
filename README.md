@@ -2,7 +2,7 @@
 
 A static, serverless dashboard that counts public GitHub commits per UTC day.
 
-The page uses GitHub's public REST API without a PAT or OAuth flow. Enter an owner/org slug and repository name, or paste a GitHub repository URL. The dashboard tracks commits from the last 90 UTC days.
+The page uses GitHub's public REST API without a PAT or OAuth flow. Enter an owner/org slug and repository name. The dashboard fetches commits from the last 90 UTC days, then starts the visible range at the earliest commit found in that window.
 
 ## Run locally
 

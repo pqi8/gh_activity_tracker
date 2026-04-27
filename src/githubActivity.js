@@ -91,6 +91,16 @@ export function countCommitsByDay(commits, startDay, endDay) {
   return Array.from(counts, ([day, count]) => ({ day, count }));
 }
 
+export function trimLeadingInactiveDays(series) {
+  const firstActiveIndex = series.findIndex((item) => item.count > 0);
+
+  if (firstActiveIndex <= 0) {
+    return series;
+  }
+
+  return series.slice(firstActiveIndex);
+}
+
 export function summarizeSeries(series) {
   const totalCommits = series.reduce((total, item) => total + item.count, 0);
   const activeDays = series.filter((item) => item.count > 0).length;
@@ -206,13 +216,13 @@ export async function fetchRepositoryActivity({ owner, repo, now = new Date(), s
     nextUrl = parseNextLink(response.headers.get("link"));
   }
 
-  const series = countCommitsByDay(commits, startDay, endDay);
+  const series = trimLeadingInactiveDays(countCommitsByDay(commits, startDay, endDay));
 
   return {
     metadata,
     owner,
     repo,
-    startDay,
+    startDay: series[0]?.day ?? startDay,
     endDay,
     series,
     summary: summarizeSeries(series),

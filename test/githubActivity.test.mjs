@@ -8,6 +8,7 @@ import {
   parseNextLink,
   parseRepositorySlug,
   summarizeSeries,
+  trimLeadingInactiveDays,
   toUtcDayKey
 } from "../src/githubActivity.js";
 
@@ -55,6 +56,32 @@ test("countCommitsByDay fills zero days and uses committer dates", () => {
     { day: "2026-04-26", count: 0 },
     { day: "2026-04-27", count: 1 }
   ]);
+});
+
+test("trimLeadingInactiveDays starts display at earliest active day", () => {
+  assert.deepEqual(
+    trimLeadingInactiveDays([
+      { day: "2026-04-22", count: 0 },
+      { day: "2026-04-23", count: 0 },
+      { day: "2026-04-24", count: 2 },
+      { day: "2026-04-25", count: 0 },
+      { day: "2026-04-26", count: 1 }
+    ]),
+    [
+      { day: "2026-04-24", count: 2 },
+      { day: "2026-04-25", count: 0 },
+      { day: "2026-04-26", count: 1 }
+    ]
+  );
+});
+
+test("trimLeadingInactiveDays keeps an all-empty window intact", () => {
+  const emptySeries = [
+    { day: "2026-04-22", count: 0 },
+    { day: "2026-04-23", count: 0 }
+  ];
+
+  assert.equal(trimLeadingInactiveDays(emptySeries), emptySeries);
 });
 
 test("summarizeSeries reports totals and busiest day", () => {
