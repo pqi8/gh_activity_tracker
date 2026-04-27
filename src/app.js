@@ -29,13 +29,15 @@ function formatNumber(value, options = {}) {
   return new Intl.NumberFormat(undefined, options).format(value);
 }
 
-function formatDate(day) {
+function formatDate(value) {
+  const dateValue = /^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00.000Z` : value;
+
   return new Intl.DateTimeFormat(undefined, {
     month: "short",
     day: "numeric",
     year: "numeric",
     timeZone: "UTC"
-  }).format(new Date(`${day}T00:00:00.000Z`));
+  }).format(new Date(dateValue));
 }
 
 function setStatus(message, tone = "neutral") {
