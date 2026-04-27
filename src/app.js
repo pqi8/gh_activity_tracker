@@ -121,7 +121,7 @@ function renderChart(series) {
   const max = Math.max(1, ...series.map((item) => item.count));
   const bars = series.map((item) => {
     const bar = document.createElement("div");
-    const height = Math.max(4, (item.count / max) * 180);
+    const height = item.count === 0 ? 4 : Math.max(8, (item.count / max) * 250);
 
     bar.className = "bar";
     bar.style.height = `${height}px`;
@@ -196,16 +196,26 @@ function renderHeatmap(series) {
 }
 
 function renderTable(series) {
+  const max = Math.max(1, ...series.map((item) => item.count));
   const rows = [...series]
     .reverse()
     .map((item) => {
       const row = document.createElement("tr");
       const dayCell = document.createElement("td");
+      const activityCell = document.createElement("td");
       const countCell = document.createElement("td");
+      const track = document.createElement("span");
+      const fill = document.createElement("span");
+      const width = item.count === 0 ? 0 : Math.max(4, (item.count / max) * 100);
 
       dayCell.textContent = formatDate(item.day);
+      track.className = "activity-track";
+      fill.className = "activity-fill";
+      fill.style.setProperty("--activity-width", `${width}%`);
+      track.append(fill);
+      activityCell.append(track);
       countCell.textContent = formatNumber(item.count);
-      row.append(dayCell, countCell);
+      row.append(dayCell, activityCell, countCell);
 
       return row;
     });

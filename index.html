@@ -7,80 +7,123 @@
     <link rel="stylesheet" href="./src/styles.css" />
   </head>
   <body>
-    <main class="shell">
-      <header class="topbar">
-        <div class="brand">
-          <h1>GitHub Activity Tracker</h1>
-          <span>Unauthenticated public commit counts by UTC day</span>
+    <div class="app-frame">
+      <aside class="side-rail" aria-label="Application">
+        <a class="rail-mark" href="./" aria-label="GitHub Activity Tracker">GH</a>
+        <nav class="rail-nav" aria-label="Views">
+          <a class="rail-item is-active" href="./" aria-label="Dashboard">
+            <span class="rail-icon">D</span>
+            <span>Dashboard</span>
+          </a>
+        </nav>
+      </aside>
+
+      <main class="workspace">
+        <header class="topbar">
+          <div class="brand">
+            <p>Public repository analytics</p>
+            <h1>GitHub Activity Tracker</h1>
+          </div>
+          <div class="topbar-actions">
+            <span class="badge">No auth</span>
+            <button class="icon-button" data-download type="button" disabled aria-label="Download CSV">CSV</button>
+          </div>
+        </header>
+
+        <section class="query-panel">
+          <form class="repo-form" data-repo-form>
+            <label>
+              Owner
+              <input data-owner name="owner" autocomplete="organization" placeholder="pqi8" />
+            </label>
+            <label>
+              Repository
+              <input data-repo name="repo" autocomplete="off" placeholder="gh_activity_tracker" />
+            </label>
+            <label class="paste-field">
+              Paste URL
+              <input data-paste name="paste" autocomplete="off" placeholder="https://github.com/owner/repo" />
+            </label>
+            <button class="primary-button" data-submit type="submit">Track</button>
+          </form>
+
+          <div class="status-strip" role="status" aria-live="polite">
+            <span class="pulse" aria-hidden="true"></span>
+            <p class="status" data-status data-tone="neutral">Ready.</p>
+          </div>
+        </section>
+
+        <section class="repo-heading">
+          <div>
+            <p class="eyebrow">Current repository</p>
+            <h2 data-repo-title>No repository loaded</h2>
+            <p data-repo-meta>Counts include the last 90 UTC days, capped at the repository creation date.</p>
+          </div>
+          <div class="window-chip">
+            <span>Window</span>
+            <strong>Auto</strong>
+          </div>
+        </section>
+
+        <section class="stats" data-stats>
+          <article><span>Commits</span><strong>0</strong></article>
+          <article><span>Active days</span><strong>0</strong></article>
+          <article><span>Tracked days</span><strong>0</strong></article>
+          <article><span>Avg / day</span><strong>0</strong></article>
+          <article><span>Busiest day</span><strong>None</strong></article>
+          <article><span>Rate left</span><strong>Unknown</strong></article>
+        </section>
+
+        <div class="dashboard-grid">
+          <section class="panel chart-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Timeline</p>
+                <h3>Daily commits</h3>
+              </div>
+              <span class="mini-label">UTC</span>
+            </div>
+            <div class="chart-shell">
+              <div class="chart" data-chart style="--day-count: 90"></div>
+            </div>
+          </section>
+
+          <section class="panel heatmap-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Calendar</p>
+                <h3>Intensity</h3>
+              </div>
+              <span class="mini-label">Day</span>
+            </div>
+            <div class="heatmap-shell">
+              <div class="heatmap" data-heatmap></div>
+            </div>
+          </section>
+
+          <section class="panel table-panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Records</p>
+                <h3>Daily counts</h3>
+              </div>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Day</th>
+                    <th>Activity</th>
+                    <th>Commits</th>
+                  </tr>
+                </thead>
+                <tbody data-table-body></tbody>
+              </table>
+            </div>
+          </section>
         </div>
-      </header>
-
-      <form class="repo-form panel" data-repo-form>
-        <label>
-          Owner
-          <input data-owner name="owner" autocomplete="organization" placeholder="pqi8" />
-        </label>
-        <label>
-          Repository
-          <input data-repo name="repo" autocomplete="off" placeholder="gh_activity_tracker" />
-        </label>
-        <label>
-          Paste
-          <input data-paste name="paste" autocomplete="off" placeholder="https://github.com/owner/repo" />
-        </label>
-        <button data-submit type="submit">Track</button>
-      </form>
-
-      <p class="status" data-status data-tone="neutral">Ready.</p>
-
-      <section class="repo-heading">
-        <div>
-          <h2 data-repo-title>No repository loaded</h2>
-          <p data-repo-meta>Counts include the last 90 UTC days, capped at the repository creation date.</p>
-        </div>
-        <button class="secondary" data-download type="button" disabled>CSV</button>
-      </section>
-
-      <section class="stats" data-stats>
-        <article><span>Commits</span><strong>0</strong></article>
-        <article><span>Active days</span><strong>0</strong></article>
-        <article><span>Tracked days</span><strong>0</strong></article>
-        <article><span>Avg / day</span><strong>0</strong></article>
-        <article><span>Busiest day</span><strong>None</strong></article>
-        <article><span>Rate left</span><strong>Unknown</strong></article>
-      </section>
-
-      <div class="dashboard-grid">
-        <section class="section panel">
-          <h3>Daily commits</h3>
-          <div class="chart-scroll">
-            <div class="chart" data-chart style="--day-count: 90"></div>
-          </div>
-        </section>
-
-        <section class="section panel">
-          <h3>Calendar intensity</h3>
-          <div class="heatmap-scroll">
-            <div class="heatmap" data-heatmap></div>
-          </div>
-        </section>
-
-        <section class="section panel">
-          <h3>Daily table</h3>
-          <div class="table-scroll">
-            <table>
-              <thead>
-                <tr>
-                  <th>Day</th>
-                  <th>Commits</th>
-                </tr>
-              </thead>
-              <tbody data-table-body></tbody>
-            </table>
-          </div>
-        </section>
-      </div>
-    </main>
+      </main>
+    </div>
 
     <script type="module" src="./src/app.js"></script>
   </body>
